@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Top 10 ยอดนักอ่าน | Smart Library</title>
+
+  <!-- ฟอนต์ / โครง topbar ใช้ชุดเดียวกับหน้าอื่น -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=K2D:wght@100..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="home.css">
+  <link rel="stylesheet" href="readers.css?v=1">
+
+  <!-- PapaParse โหลดข้อมูลจาก Google Sheets -->
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js" defer></script>
+  <script src="readers.js?v=1" defer></script>
+</head>
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  const btn   = document.getElementById('btnCats');
+  const group = btn?.closest('.nav-group');
+  if (!btn || !group) return;
+
+  // คลิกปุ่ม = เปิดเมนู (ค้างไว้)
+  btn.addEventListener('click', function(e){
+    e.preventDefault();
+    group.classList.add('is-open');
+  });
+
+  // คลิกนอกเมนู = ปิด
+  document.addEventListener('click', function(e){
+    if (!group.contains(e.target)) group.classList.remove('is-open');
+  });
+
+  // คลิกลิงก์หมวดย่อยแล้วปิด (ก่อนนำทาง)
+  document.getElementById('catsMenu')?.addEventListener('click', function(e){
+    const a = e.target.closest('a');
+    if (a) group.classList.remove('is-open');
+  });
+});
+</script>
+<body class="page-leaderboard">
+  <!-- Topbar -->
+  <header class="topbar">
+    <div class="topbar__brand">
+      <img src="img/logo.png" alt="Smart Library" class="logo">
+      <span class="brand-text">Smart Library</span>
+    </div>
+    <nav class="topbar__menu">
+      <a href="index.html" class="active">หน้าแรก</a>
+      <!-- กลุ่ม: หมวดหนังสือ (เอาเมาส์ไปชี้แล้วโชว์ 000–900 พร้อมชื่อไทย) -->
+  <div class="nav-group">
+    <a href="#" class="nav-link has-caret" id="btnCats">หมวดหนังสือ</a>
+    <div class="nav-menu" role="menu" id="catsMenu">
+      <div class="nav-menu-grid">
+        <a href="cat.html?cat=000">000 / ทั่วไป</a>
+        <a href="cat.html?cat=100">100 / จิตวิทยา</a>
+        <a href="cat.html?cat=200">200 / ศาสนา</a>
+        <a href="cat.html?cat=300">300 / สังคมศาสตร์</a>
+        <a href="cat.html?cat=400">400 / ภาษา</a>
+        <a href="cat.html?cat=500">500 / วิทยาศาสตร์</a>
+        <a href="cat.html?cat=600">600 / เทคโนโลยี</a>
+        <a href="cat.html?cat=700">700 / ศิลปะ/นันทนาการ</a>
+        <a href="cat.html?cat=800">800 / วรรณกรรม</a>
+        <a href="cat.html?cat=900">900 / ภูมิศาสตร์/ประวัติศาสตร์</a>
+      </div>
+    </div>
+  </div>
+      <a href="#" onclick="alert('กำลังพัฒนา');return false;">ค้นหาหนังสือ</a>
+      <a href="readers.html" class="nav-link">ยอดนักอ่าน</a>
+      <a href="#" onclick="alert('กำลังพัฒนา');return false;">เกี่ยวกับ</a>
+    </nav>
+  </header>
+
+  <main class="wrap">
+    <h1 id="page-title">Top 10 ยอดนักอ่าน</h1>
+    <div class="subtitle">จัดอันดับยอดนักอ่านตามจำนวนเล่มและแต้มสะสม</div>
+
+    <!-- Controls -->
+  <div class="controls">
+    <input id="q" type="search" placeholder="ค้นหาชื่อ/ชั้น/ห้อง" />
+    <div class="spacer"></div>
+    <button id="viewCard"  class="btn">แบบการ์ด</button>
+    <button id="viewTable" class="btn btn-ghost">แบบตาราง</button>
+    <a id="btnPrint" class="btn btn-ghost" href="#">พิมพ์</a>
+  </div>
+
+
+    <!-- Stats -->
+    <div class="stats">
+      <div class="stat"><div class="num" id="stat-people">-</div><div class="lbl">จำนวนนักอ่าน</div></div>
+      <div class="stat"><div class="num" id="stat-books">-</div><div class="lbl">เล่มทั้งหมด</div></div>
+      <div class="stat"><div class="num" id="stat-min">-</div><div class="lbl">เวลาฟังรวม (นาที)</div></div>
+      <div class="stat"><div class="num" id="stat-update">-</div><div class="lbl">อัปเดตล่าสุด</div></div>
+    </div>
+
+    <!-- Leaderboard (การ์ด) -->
+    <section id="grid" class="lb-grid" aria-live="polite"></section>
+
+    <!-- Table view -->
+    <section id="tableWrap" class="lb-table-wrap" hidden>
+      <table>
+        <thead><tr>
+          <th>#</th><th>ชื่อ</th><th>ชั้น/ห้อง</th><th>เล่ม</th><th>เวลาฟัง (นาที)</th><th>เหรียญ</th>
+        </tr></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </section>
+
+    <section id="error" class="err" hidden></section>
+  </main>
+</body>
+</html>
+
