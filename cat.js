@@ -1,5 +1,5 @@
 // ===== Config (ใช้ SHEET_ID เดียวกับโปรเจกต์หลัก) =====
-const SHEET_ID  = "1agyu31GI2YGD-42in3P7hZytsKNO-kg-JDdfvlJL7q0";
+const SHEET_ID  = "14sI3n1mFcBRq8zZ04lw79bpPZRSsacgMZ7sDaeIPXtU";
 const LABELS = {
   "000":"ความรู้ทั่วไป","100":"จิตวิทยา","200":"ศาสนา","300":"สังคมศาสตร์","400":"ภาษา",
   "500":"วิทยาศาสตร์","600":"วิทยาศาสตร์ประยุกต์","700":"ศิลปะและนันทนาการ","800":"วรรณกรรม","900":"ภูมิศาสตร์/ประวัติศาสตร์",
@@ -209,3 +209,4 @@ function card(book){
   selStatus.addEventListener("change", apply);
   selSort.addEventListener("change", apply);
 })();
+
