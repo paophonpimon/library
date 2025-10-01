@@ -2,7 +2,7 @@
 "use strict";
 
 // === CONFIG ===
-const SHEET_ID  = "1agyu31GI2YGD-42in3P7hZytsKNO-kg-JDdfvlJL7q0"; // ของคุณเดิม
+const SHEET_ID  = "14sI3n1mFcBRq8zZ04lw79bpPZRSsacgMZ7sDaeIPXtU"; // ของคุณเดิม
 const SHEET_TAB = "readers";
 
 // คีย์ที่รองรับ (ยืดหยุ่นหัวคอลัมน์)
@@ -192,3 +192,4 @@ window.addEventListener("DOMContentLoaded", ()=>{
   $("btnPrint").addEventListener("click", e=>{ e.preventDefault(); window.print(); });
   refresh();
 });
+
